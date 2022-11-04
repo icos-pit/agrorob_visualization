@@ -1,4 +1,8 @@
 from setuptools import setup
+import os
+from glob import glob
+from setuptools import setup
+from setuptools import find_packages
 
 package_name = 'agrorob_urdf'
 
@@ -10,6 +14,8 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
+        (os.path.join('share', package_name), glob('launch/*.py')),
+        (os.path.join('share', package_name), glob('urdf/*')),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -20,6 +26,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+            'state_publisher = agrorob_urdf.state_publisher:main'
         ],
     },
 )
+
