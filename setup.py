@@ -16,6 +16,7 @@ setup(
         ('share/' + package_name, ['package.xml']),
         (os.path.join('share', package_name), glob('launch/*.py')),
         (os.path.join('share', package_name), glob('urdf/*')),
+        (os.path.join('share', package_name), glob('meshes/*.STL')),
     ],
     install_requires=['setuptools'],
     zip_safe=True,

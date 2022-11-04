@@ -23,7 +23,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://agrorob_urdf/meshes/body.STL" />
+          filename="file://agrorob_urdf/meshes/body.STL" />
       </geometry>
       <material
         name="">
