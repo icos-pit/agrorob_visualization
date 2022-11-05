@@ -41,7 +41,7 @@ class StatePublisher(Node):
         # message declarations
         odom_trans = TransformStamped()
         odom_trans.header.frame_id = 'odom'
-        odom_trans.child_frame_id = 'body'
+        odom_trans.child_frame_id = 'base_link'
         joint_state = JointState()
 
         try:
@@ -61,7 +61,7 @@ class StatePublisher(Node):
                 odom_trans.header.stamp = now.to_msg()
                 odom_trans.transform.translation.x = cos(angle)*2
                 odom_trans.transform.translation.y = sin(angle)*2
-                odom_trans.transform.translation.z = 0.7
+                odom_trans.transform.translation.z = 1.6
                 odom_trans.transform.rotation = \
                     euler_to_quaternion(0, 0, angle + pi/2) # roll,pitch,yaw
 
