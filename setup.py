@@ -4,7 +4,7 @@ from glob import glob
 from setuptools import setup
 from setuptools import find_packages
 
-package_name = 'agrorob_urdf'
+package_name = 'agrorob_visualization'
 
 setup(
     name=package_name,
@@ -27,7 +27,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'state_publisher = agrorob_urdf.state_publisher:main'
+            'state_publisher = agrorob_visualization.state_publisher:main'
         ],
     },
 )
