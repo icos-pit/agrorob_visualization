@@ -8,18 +8,35 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclpy REQUIRED)
+find_package(rclcpp REQUIRED)
 find_package(agrorob_msgs REQUIRED)
+find_package(sensor_msgs  REQUIRED)
+find_package(tf2 REQUIRED)
+find_package(tf2_ros  REQUIRED)
 
-add_executable(agrorob_state_publisher src/agrorob_state_publisher_node.cpp src/agrorob_state_publisher.cpp)
-# add_executable(agrorob_state_publisher src/agrorob_state_publisher.cpp)
+# set(library_name ${PROJECT_NAME})
+# add_library(${library_name} SHARED
+#   src/kinematics.cpp
+#   src/agrorob_state_publisher.cpp
+# )
+
+add_executable(agrorob_state_publisher src/main.cpp src/agrorob_state_publisher.cpp src/kinematics.cpp)
+
 target_include_directories(agrorob_state_publisher PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
+
 target_compile_features(agrorob_state_publisher PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
+
 ament_target_dependencies(
   agrorob_state_publisher
   "rclpy"
+  "rclcpp"
   "agrorob_msgs"
+  "sensor_msgs"
+  "tf2"
+  "tf2_ros"
+  "geometry_msgs"
 )
 
 install(DIRECTORY
@@ -34,12 +51,7 @@ install(TARGETS agrorob_state_publisher
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
-  # the following line skips the linter which checks for copyrights
-  # comment the line when a copyright and license is added to all source files
   set(ament_cmake_copyright_FOUND TRUE)
-  # the following line skips cpplint (only works in a git repo)
-  # comment the line when this package is in a git repo and when
-  # a copyright and license is added to all source files
   set(ament_cmake_cpplint_FOUND TRUE)
   ament_lint_auto_find_test_dependencies()
 endif()
