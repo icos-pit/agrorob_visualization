@@ -13,20 +13,20 @@ namespace agrorob_kinematics
     class Kinematics
     {
     public:
-        Kinematics();
+        Kinematics(const double& dt);
         void calculate_odom_pose();
+        double get_wheel_diameter();
+        void set_ucar(const vec2& u);
+        std::shared_ptr<geometry_msgs::msg::Pose> odom_pose;
+
     private:
-
-        // auto simFunc = [&](const vec& q, vec3& dq, const double call_back_duration_s)
-        // {
-        //     dq = RDCarKinematicsGPRear(1.0, q, {0.0, 0.0});
-        // };
-
-        
-        
-        std::shared_ptr<sensor_msgs::msg::Pose> odom_pose;
-        double wheel_base;
+    
+        inline vec3 RDCarKinematicsGPRear(double wheel_base, vec3 q, vec2& ucar);
         vec3 qcar;
+        vec2 ucar;
+        double wheel_base;
+        double wheel_diameter;
+        double dt_;
     };
 
 

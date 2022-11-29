@@ -8,9 +8,10 @@ from launch_ros.actions import Node
 def generate_launch_description():
 
     use_sim_time = LaunchConfiguration('use_sim_time', default='false')
-
-    urdf_file_name = 'urdf/agrorob_urdf.urdf'
+    urdf_file_name = 'urdf/agrorob_visualization.urdf'
     urdf = os.path.join( get_package_share_directory('agrorob_visualization'), urdf_file_name)
+    base_path = os.path.realpath(get_package_share_directory('package'))
+    rviz_path=base_path+'/urdf/agrorob_visualization.rviz'
     with open(urdf, 'r') as infp:
         robot_desc = infp.read()
 
@@ -26,11 +27,12 @@ def generate_launch_description():
             output='screen',
             parameters=[{'use_sim_time': use_sim_time, 'robot_description': robot_desc}],
             arguments=[urdf]),
-        # Node(
-        #     package='agrorob_visualization',
-        #     executable='state_publisher',
-        #     name='state_publisher',
-        #     output='screen'),
+        Node(
+            package='rviz2',
+            executable='rviz2',
+            name='rviz2',
+            output='screen',
+            arguments=['-d'+str(rviz_path)]),
         Node(
             package='agrorob_visualization',
             executable='agrorob_state_publisher',

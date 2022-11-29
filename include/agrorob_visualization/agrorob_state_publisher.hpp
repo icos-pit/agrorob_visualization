@@ -32,10 +32,10 @@ namespace agrorob_visualization
     private:
 
         geometry_msgs::msg::TransformStamped::SharedPtr initialize_tf(const string& parent_link , const string& child_link );
-        vector<double> initialize_with_zeros(int n);
 
         void robot_state_callback(const agrorob_msgs::msg::RobotState& robot_state_ms);
         void timer_callback();
+        void update_ucar();
         
 
         rclcpp::Publisher<sensor_msgs::msg::JointState>::SharedPtr joint_states_pub_;
