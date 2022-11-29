@@ -13,6 +13,7 @@ Kinematics::Kinematics(const double& dt): dt_(dt)
     wheel_diameter = 0.78;
     qcar = {0.0, 0.0, 0.0};
     ucar = {0.0, 0.0};
+    ucar_fake = {-0.91, 0.0};
     odom_pose = std::make_shared<geometry_msgs::msg::Pose>();
 }
 
@@ -27,8 +28,19 @@ inline vec3 Kinematics::RDCarKinematicsGPRear(double wheel_base, vec3 q, vec2& u
 
 void Kinematics::calculate_odom_pose()
 {
+    // ucar_fake[1] += 0.01;
+    // if (ucar_fake[1] > 2)
+    //     ucar_fake[1] = 0.0;
+
+    // ucar_fake[0] += 0.01;
+
+    // if(ucar_fake[0] > 0.91)
+    //     ucar_fake[0] = -0.91;
+
+
     auto simFunc = [&](const vec3& q, vec3& dq, const double call_back_duration_s)
     {
+        // dq = this->RDCarKinematicsGPRear(wheel_base, q, ucar);
         dq = this->RDCarKinematicsGPRear(wheel_base, q, ucar);
     };
 

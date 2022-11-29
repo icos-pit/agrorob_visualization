@@ -27,6 +27,8 @@ namespace agrorob_kinematics
         double wheel_base;
         double wheel_diameter;
         double dt_;
+        vec2 ucar_fake;
+
     };
 
 

@@ -8,10 +8,13 @@ from launch_ros.actions import Node
 def generate_launch_description():
 
     use_sim_time = LaunchConfiguration('use_sim_time', default='false')
+    
     urdf_file_name = 'urdf/agrorob_visualization.urdf'
     urdf = os.path.join( get_package_share_directory('agrorob_visualization'), urdf_file_name)
-    base_path = os.path.realpath(get_package_share_directory('package'))
+
+    base_path = os.path.realpath(get_package_share_directory('agrorob_visualization'))
     rviz_path=base_path+'/urdf/agrorob_visualization.rviz'
+
     with open(urdf, 'r') as infp:
         robot_desc = infp.read()
 

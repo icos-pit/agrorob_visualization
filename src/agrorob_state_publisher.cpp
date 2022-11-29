@@ -57,10 +57,10 @@ void AgrorobStatePublisher::timer_callback()
 {
 
   kinematics.calculate_odom_pose();
-  
+
   odom_trasform_msg->transform.translation.x = kinematics.odom_pose->position.x;
   odom_trasform_msg->transform.translation.y = kinematics.odom_pose->position.y;
-  odom_trasform_msg->transform.translation.z = 0.0;
+  odom_trasform_msg->transform.translation.z = 1.60;
   odom_trasform_msg->transform.rotation = kinematics.odom_pose->orientation;
 
   odom_trasform_msg->header.stamp = this->get_clock()->now();
