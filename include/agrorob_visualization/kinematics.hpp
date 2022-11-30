@@ -17,7 +17,7 @@ namespace agrorob_kinematics
         void calculate_odom_pose();
         double get_wheel_diameter();
         void set_ucar(const vec2& u);
-        std::shared_ptr<geometry_msgs::msg::Pose> odom_pose;
+        std::shared_ptr<geometry_msgs::msg::Pose> odom_pose; //TODO: change to pose stamped
 
     private:
     

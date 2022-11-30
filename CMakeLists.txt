@@ -13,6 +13,7 @@ find_package(agrorob_msgs REQUIRED)
 find_package(sensor_msgs  REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_ros  REQUIRED)
+find_package(nav_msgs  REQUIRED)
 
 # set(library_name ${PROJECT_NAME})
 # add_library(${library_name} SHARED
@@ -37,6 +38,7 @@ ament_target_dependencies(
   "tf2"
   "tf2_ros"
   "geometry_msgs"
+  "nav_msgs"
 )
 
 install(DIRECTORY

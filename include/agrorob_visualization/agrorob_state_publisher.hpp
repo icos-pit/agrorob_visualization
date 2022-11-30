@@ -8,11 +8,10 @@
 #include "sensor_msgs/msg/joint_state.hpp"
 #include "geometry_msgs/msg/transform_stamped.hpp"
 #include "tf2_ros/transform_broadcaster.h"
+#include "nav_msgs/msg/path.hpp"
 
 #include "agrorob_msgs/msg/robot_state.hpp"
 #include "agrorob_visualization/kinematics.hpp"
-
-
 
 
 
@@ -39,6 +38,8 @@ namespace agrorob_visualization
         
 
         rclcpp::Publisher<sensor_msgs::msg::JointState>::SharedPtr joint_states_pub_;
+        rclcpp::Publisher<nav_msgs::msg::Path>::SharedPtr estimated_path_pub_;
+
         rclcpp::Subscription<agrorob_msgs::msg::RobotState>::SharedPtr robot_state_sub_;
 
         std::unique_ptr<tf2_ros::TransformBroadcaster> odom_tf_broadcaster_;
@@ -46,6 +47,8 @@ namespace agrorob_visualization
 
         std::shared_ptr<sensor_msgs::msg::JointState> joint_states_msg;
         std::shared_ptr<geometry_msgs::msg::TransformStamped> odom_trasform_msg;
+        std::shared_ptr<nav_msgs::msg::Path> estimated_path_msg;
+
 
         duration_ms call_back_duration;
         double call_back_duration_s;

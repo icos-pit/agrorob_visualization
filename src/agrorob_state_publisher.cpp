@@ -6,8 +6,10 @@
 
 #include "agrorob_msgs/msg/robot_state.hpp"
 #include "geometry_msgs/msg/transform_stamped.hpp"
+#include "geometry_msgs/msg/pose_stamped.hpp"
 
 #include "sensor_msgs/msg/joint_state.hpp"
+#include "nav_msgs/msg/path.hpp"
 
 #include "agrorob_visualization/agrorob_state_publisher.hpp"
 #include "agrorob_visualization/kinematics.hpp"
@@ -23,15 +25,18 @@ call_back_duration(50ms), kinematics(std::chrono::duration<double>(call_back_dur
 
     call_back_duration_s = std::chrono::duration<double>(call_back_duration).count(); //call back duration in seconds for kinematics
 
-    
-    
-    joint_states_pub_ = this->create_publisher<sensor_msgs::msg::JointState>("/joint_states", 10);  
+    joint_states_pub_ = this->create_publisher<sensor_msgs::msg::JointState>("/joint_states", 10); 
+
+    estimated_path_pub_ = this->create_publisher<nav_msgs::msg::Path>("/agrorob/estimated_path", 10);
+
     robot_state_sub_ = this->create_subscription<agrorob_msgs::msg::RobotState>("/agrorob/robot_state", 10, std::bind(&AgrorobStatePublisher::robot_state_callback, this, _1));
     
     timer_ = this->create_wall_timer(call_back_duration, std::bind(&AgrorobStatePublisher::timer_callback, this));
     odom_tf_broadcaster_ = std::make_unique<tf2_ros::TransformBroadcaster>(*this);
 
     joint_states_msg = std::make_shared<sensor_msgs::msg::JointState>();
+    estimated_path_msg = std::make_shared<nav_msgs::msg::Path>();
+    estimated_path_msg->header.frame_id = "odom";
     odom_trasform_msg = initialize_tf("odom", "base_link");
 
     // joint_states_msg->name = {"body_shin_FR", "shin_wheel_FR", "body_shin_FL", "shin_wheel_FL", 
@@ -56,18 +61,34 @@ call_back_duration(50ms), kinematics(std::chrono::duration<double>(call_back_dur
 void AgrorobStatePublisher::timer_callback()
 {
 
+
   kinematics.calculate_odom_pose();
+  auto time_now = this->get_clock()->now();
 
   odom_trasform_msg->transform.translation.x = kinematics.odom_pose->position.x;
   odom_trasform_msg->transform.translation.y = kinematics.odom_pose->position.y;
   odom_trasform_msg->transform.translation.z = 1.60;
   odom_trasform_msg->transform.rotation = kinematics.odom_pose->orientation;
 
-  odom_trasform_msg->header.stamp = this->get_clock()->now();
-  joint_states_msg->header.stamp = this->get_clock()->now();
+  std::shared_ptr<geometry_msgs::msg::PoseStamped> pose = std::make_shared<geometry_msgs::msg::PoseStamped>();
+
+  pose->header.stamp = time_now;
+  pose->header.frame_id = "odom";
+  pose->pose.position = kinematics.odom_pose->position;
+
+
+  estimated_path_msg->poses.push_back(*pose); //TODO: create function
+  if(estimated_path_msg->poses.size() > 10000)
+    estimated_path_msg->poses.erase(estimated_path_msg->poses.begin(), estimated_path_msg->poses.begin() + 1000);
+
+  
+  odom_trasform_msg->header.stamp = time_now;
+  joint_states_msg->header.stamp = time_now;
+  estimated_path_msg->header.stamp = time_now;
 
   odom_tf_broadcaster_->sendTransform(*odom_trasform_msg);
   joint_states_pub_->publish(*joint_states_msg);
+  estimated_path_pub_->publish(*estimated_path_msg);
 
   // RCLCPP_INFO(this->get_logger(), "duration: %f", call_back_duration_s);
   
