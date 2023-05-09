@@ -39,8 +39,8 @@ void Kinematics::calculate_odom_pose()
 
     auto simFunc = [&](const vec3& q, vec3& dq, const double call_back_duration_s)
     {
-        // dq = this->RDCarKinematicsGPRear(wheel_base, q, ucar);
-        dq = this->RDCarKinematicsGPRear(wheel_base, q, ucar_fake);
+        dq = this->RDCarKinematicsGPRear(wheel_base, q, ucar);
+        // dq = this->RDCarKinematicsGPRear(wheel_base, q, ucar_fake);
     };
 
     integrate(simFunc, qcar, 0.0, dt_, dt_);

@@ -53,10 +53,10 @@ install(DIRECTORY
   DESTINATION meshes/${PROJECT_NAME}/
 )
 
-install(PROGRAMS
-  agrorob_visualization/state_publisher.py
-  DESTINATION lib/${PROJECT_NAME}
-)
+# install(PROGRAMS
+#   agrorob_visualization/state_publisher.py
+#   DESTINATION lib/${PROJECT_NAME}
+# )
 
 install(TARGETS agrorob_state_publisher 
   DESTINATION lib/${PROJECT_NAME})
